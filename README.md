@@ -21,7 +21,7 @@ To open project without errors and broken links please maintain folders structur
 
 The workbenches the documents need are locked per project by [fcppm](https://github.com/existedinnettw/fcppm): Assembly3 (every assembly), Fasteners (screws in the axes) and Assembly3's `py-slvs` solver. No Addon Manager install is needed.
 
-fcppm and `freecad-fasteners` (packaged from upstream's `V0.5.67-beta` release by [fcppm_recipes](https://github.com/existedinnettw/fcppm_recipes)) come from the `inkr` Gitea index (`https://gitea.insleker.org/api/packages/inkr_org/pypi/simple/`, configured in `~/.config/uv/uv.toml` or `UV_INDEX`; log in once with `uv auth login gitea.insleker.org`); Assembly3 from its git repository and `py-slvs` from PyPI. Versions are pinned in `uv.lock`.
+fcppm, `freecad-asm3` and `freecad-fasteners` (Assembly3 from upstream commit `773b977`, Fasteners from upstream's `V0.5.67-beta` release, both packaged by [fcppm_recipes](https://github.com/existedinnettw/fcppm_recipes)) come from the `inkr` Gitea index (`https://gitea.insleker.org/api/packages/inkr_org/pypi/simple/`, configured in `~/.config/uv/uv.toml` or `UV_INDEX`; log in once with `uv auth login gitea.insleker.org`); `py-slvs` from PyPI. Versions are pinned in `uv.lock`.
 
 ```bash
 uv sync --locked                       # builds py-slvs from source on Python 3.14 (SWIG comes from PyPI)
@@ -37,6 +37,22 @@ Notes from the migration, for anyone editing the parts:
 - FreeCAD 1.1 cannot restore the infinite edge it stores for a PartDesign datum line: the datum comes back with an empty shape. The datum lines here store a finite edge instead, centred on the datum origin and `Length` long. A datum line created in FreeCAD 1.1 has the same problem on its next load.
 - `Spindle#bit-mate` used to take the circle that `Hole002` imprinted on the spindle's bottom face. The hole cuts nothing and FreeCAD 1.1 no longer imprints it, so the element now uses the bottom-face circle with the same centre and axis.
 - Save the parts before the assemblies that link to them, so the assemblies store the parts' current time stamps.
+
+## Using the model in another project
+
+The model is published to the same index as the fcppm package `cnc4060`: the documents in `cads/` and `docs/`, with Assembly3, Fasteners and `py-slvs` as dependencies.
+
+```bash
+uv add cnc4060
+uv run fcppm sync                                # 3rd/cnc4060, 3rd/freecad-asm3, 3rd/freecad-fasteners
+uv run fcppm run 3rd/cnc4060/cads/4060CNC.FCStd
+```
+
+Link its documents from your own assembly through `3rd/cnc4060/cads/…`.
+
+## Releasing
+
+Set `[project].version` in `pyproject.toml`, merge, and push the tag `vX.Y.Z`. `.github/workflows/release.yml` checks the tag against the version, runs the CI checks, publishes sdist and wheel to the index and attaches them to a GitHub release. The `GITEA_PYPI_*` secrets are pushed to this repo by git-acc-rtn's secret-sync workflow.
 
 ## Disclaimer
 

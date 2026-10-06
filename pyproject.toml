@@ -1,25 +1,38 @@
+[build-system]
+requires = ["fcppm>=0.2.0"]
+build-backend = "fcppm"
+
 [project]
 name = "cnc4060"
-version = "0.1.0"
+version = "1.0.1"
 description = "DIY CNC router with a work area of about 400x600 mm"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
+authors = [{ name = "Andrew Shkolik" }]
 requires-python = ">=3.14"  # FreeCAD 1.1's Python
 dependencies = [
-    "freecad-asm3",              # Assembly3 workbench (namespace-style): every assembly in cads/
-    "freecad-fasteners==0.5.67", # Fasteners workbench (recipe in fcppm_recipes)
+    "freecad-asm3==0.12.3",      # Assembly3 workbench (namespace-style): every assembly in cads/
+    "freecad-fasteners==0.5.67", # Fasteners workbench
     "py-slvs>=1.0.6",            # Assembly3's SolveSpace solver
 ]
+
+[project.urls]
+Homepage = "https://github.com/existedinnettw/CNC4060"
+Repository = "https://github.com/existedinnettw/CNC4060"
+Issues = "https://github.com/existedinnettw/CNC4060/issues"
 
 [dependency-groups]
 dev = ["fcppm>=0.2.0"]
 
-[tool.uv]
-package = false
+[tool.fcppm]
+freecad = ">=1.1"           # every document is saved by FreeCAD 1.1
+tags = ["cnc", "assembly"]
+wheel-include = ["cads/**", "docs/**"]
 
-[tool.uv.sources]
-freecad-asm3 = { git = "https://github.com/realthunder/FreeCAD_assembly3" }
+[tool.uv]
+# rebuild on every `uv sync`, which runs the fcppm develop hook (package.xml)
+reinstall-package = ["cnc4060"]
 
 # py-slvs has no cp314 wheel on PyPI: its sdist needs SWIG, and its CMakeLists predates CMake 4
 [tool.uv.extra-build-dependencies]
