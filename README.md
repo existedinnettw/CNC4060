@@ -31,7 +31,9 @@ uv run fcppm sync                      # 3rd/freecad-fasteners, FreeCAD.cfg
 uv run fcppm run cads/4060CNC.FCStd    # FreeCAD with the locked Assembly3 and Fasteners
 ```
 
-`uv run fcppm doctor` checks that every link and every Python object in `cads/` resolves. With mainline FreeCAD 1.1, recomputing reports three broken Assembly3 elements (`X_axis_plates#_Element035`, `Z_axis#Element011`, `Z_axis#Element061`): their geometry references were saved by FreeCAD Link (2021) and need re-picking once.
+`uv run fcppm doctor` checks that every link and every Python object in `cads/` resolves. Recomputing `cads/4060CNC.FCStd` with mainline FreeCAD 1.1 reports no broken Assembly3 elements.
+
+FreeCAD 1.1 cannot restore the infinite edge it stores for a PartDesign datum line (the datum comes back with an empty shape), so the datum lines that Assembly3 elements use (`Ballscrew.FCStd`, `BallNut.FCStd`) store a finite edge instead, centred on the datum origin and `Length` long. A datum line created in FreeCAD 1.1 has the same problem on its next load. Re-saving a part in FreeCAD 1.1 also rewrites its stored element references, and the Fasteners screw edges in these parts then fail to resolve, so patch these files rather than re-saving them.
 
 ## Disclaimer
 
