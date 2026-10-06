@@ -13,9 +13,7 @@ Fasteners are mix of metric and imperial threads just because all linear motion 
 
 # CAD
 
-Project created in FreeCAD Link. You can find latest releases here: https://github.com/realthunder/FreeCAD_assembly3/releases
-
-Also you need to install Fasteners workbench: https://github.com/shaise/FreeCAD_FastenersWB
+Project created in FreeCAD Link (2021) and migrated to FreeCAD 1.1: every document in `cads/` is saved by FreeCAD 1.1 and needs the Assembly3 and Fasteners workbenches (see below).
 
 To open project without errors and broken links please maintain folders structure as-is.
 
@@ -31,9 +29,14 @@ uv run fcppm sync                      # 3rd/freecad-fasteners, FreeCAD.cfg
 uv run fcppm run cads/4060CNC.FCStd    # FreeCAD with the locked Assembly3 and Fasteners
 ```
 
-`uv run fcppm doctor` checks that every link and every Python object in `cads/` resolves. Recomputing `cads/4060CNC.FCStd` with mainline FreeCAD 1.1 reports no broken Assembly3 elements.
+`uv run fcppm doctor` checks that every link and every Python object in `cads/` resolves. Opening `cads/4060CNC.FCStd` and recomputing reports no broken objects.
 
-FreeCAD 1.1 cannot restore the infinite edge it stores for a PartDesign datum line (the datum comes back with an empty shape), so the datum lines that Assembly3 elements use (`Ballscrew.FCStd`, `BallNut.FCStd`) store a finite edge instead, centred on the datum origin and `Length` long. A datum line created in FreeCAD 1.1 has the same problem on its next load. Re-saving a part in FreeCAD 1.1 also rewrites its stored element references, and the Fasteners screw edges in these parts then fail to resolve, so patch these files rather than re-saving them.
+Notes from the migration, for anyone editing the parts:
+
+- Every Assembly3 element was re-picked against the geometry it cached in FreeCAD Link and checked to match; all 184 part placements are unchanged. Elements on Fasteners screws were the reason: Fasteners 0.5.67 builds the screws with different topology, so their old topological names no longer resolve. Where a screw edge itself changed (the ISO 4026 set-screw tip in `NEMA23-76`, some screw circles in the axis plates), the element uses the circle on the same axis.
+- FreeCAD 1.1 cannot restore the infinite edge it stores for a PartDesign datum line: the datum comes back with an empty shape. The datum lines here store a finite edge instead, centred on the datum origin and `Length` long. A datum line created in FreeCAD 1.1 has the same problem on its next load.
+- `Spindle#bit-mate` used to take the circle that `Hole002` imprinted on the spindle's bottom face. The hole cuts nothing and FreeCAD 1.1 no longer imprints it, so the element now uses the bottom-face circle with the same centre and axis.
+- Save the parts before the assemblies that link to them, so the assemblies store the parts' current time stamps.
 
 ## Disclaimer
 
