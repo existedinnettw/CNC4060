@@ -1,0 +1,29 @@
+[project]
+name = "cnc4060"
+version = "0.1.0"
+description = "DIY CNC router with a work area of about 400x600 mm"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.14"  # FreeCAD 1.1's Python
+dependencies = [
+    "freecad-asm3",              # Assembly3 workbench (namespace-style): every assembly in cads/
+    "freecad-fasteners==0.5.67", # Fasteners workbench (recipe in fcppm_recipes)
+    "py-slvs>=1.0.6",            # Assembly3's SolveSpace solver
+]
+
+[dependency-groups]
+dev = ["fcppm>=0.2.0"]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+freecad-asm3 = { git = "https://github.com/realthunder/FreeCAD_assembly3" }
+
+# py-slvs has no cp314 wheel on PyPI: its sdist needs SWIG, and its CMakeLists predates CMake 4
+[tool.uv.extra-build-dependencies]
+py-slvs = ["swig"]
+
+[tool.uv.extra-build-variables]
+py-slvs = { CMAKE_POLICY_VERSION_MINIMUM = "3.5" }
