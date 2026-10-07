@@ -25,15 +25,15 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "fcppm", specifier = ">=0.2.0" }]
+dev = [{ name = "fcppm", specifier = ">=0.2.1" }]
 
 [[package]]
 name = "fcppm"
-version = "0.2.0"
+version = "0.2.1"
 source = { registry = "https://gitea.insleker.org/api/packages/inkr_org/pypi/simple/" }
-sdist = { url = "https://gitea.insleker.org/api/packages/inkr_org/pypi/files/fcppm/0.2.0/fcppm-0.2.0.tar.gz", hash = "sha256:5b36c6f0ab00f661681a5d8ec0025c77657bd89d08f89cee228d90ab84471a1c" }
+sdist = { url = "https://gitea.insleker.org/api/packages/inkr_org/pypi/files/fcppm/0.2.1/fcppm-0.2.1.tar.gz", hash = "sha256:7c943630ae74134c2db8b3151511d93e333177ce77d8c4852910b6d1b55f369f" }
 wheels = [
-    { url = "https://gitea.insleker.org/api/packages/inkr_org/pypi/files/fcppm/0.2.0/fcppm-0.2.0-py3-none-any.whl", hash = "sha256:5d2a1231bc137a07e673a8ae83cd2eaf5cc49e8a73490f6b75274a05cfecaf4f" },
+    { url = "https://gitea.insleker.org/api/packages/inkr_org/pypi/files/fcppm/0.2.1/fcppm-0.2.1-py3-none-any.whl", hash = "sha256:abb260775c3eaf33ac286f947d8fe704cb17b2b6ee5ec851976d77ff8d6b06a9" },
 ]
 
 [[package]]
