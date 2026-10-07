@@ -44,7 +44,7 @@ jobs:
             echo "tag ${GITHUB_REF_NAME} != v${version} in pyproject.toml"; exit 1; }
 
       - run: uv lock --check
-      - run: uv tool run --from "fcppm>=0.2.0" fcppm lint
+      - run: uv tool run --from "fcppm>=0.2.1" fcppm lint
       - run: uv build
       - name: The assemblies are in the wheel
         run: python3 .github/workflows/wheel_content.py dist/*.whl
