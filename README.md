@@ -24,7 +24,7 @@ The workbenches the documents need are locked per project by [fcppm](https://git
 fcppm, `freecad-asm3` and `freecad-fasteners` (Assembly3 from upstream commit `773b977`, Fasteners from upstream's `V0.5.67-beta` release, both packaged by [fcppm_recipes](https://github.com/existedinnettw/fcppm_recipes)) come from the `inkr` Gitea index (`https://gitea.insleker.org/api/packages/inkr_org/pypi/simple/`, configured in `~/.config/uv/uv.toml` or `UV_INDEX`; log in once with `uv auth login gitea.insleker.org`); `py-slvs` from PyPI. Versions are pinned in `uv.lock`.
 
 ```bash
-uv sync --locked                       # builds py-slvs from source on Python 3.14 (SWIG comes from PyPI)
+uv sync --locked                       # Python 3.12 (.python-version); on 3.14 py-slvs builds from source (SWIG from PyPI)
 uv run fcppm sync                      # 3rd/freecad-fasteners, FreeCAD.cfg
 uv run fcppm run cads/4060CNC.FCStd    # FreeCAD with the locked Assembly3 and Fasteners
 ```
